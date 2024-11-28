@@ -19,7 +19,8 @@ class Program
 
     static IEnumerable<int> GetNumber()     // 지연 실행, 분할 처리 할 때 사용
     {
-        // yield는 무조건 IEnumerable, IEnumerator 랑만 사용
+        // yield는 무조건 IEnumerable, IEnumerator 랑만 사용. yield 활용해서 Coroutine 사용 가능(유니티)
+        // 함수 호출 시 StartCoroutine("")로 호출 (유니티 엔진)
         yield return 10;                    // 첫 루프에서 리턴되는 값
         yield return 20;                    // 두 번째 루프에서 리턴되는 값
         yield return 30;                    // 세 번째 루프에서 리턴되는 값
@@ -55,5 +56,30 @@ class Program
         {
             System.Console.WriteLine(i.Value);
         }
+        
+        // 예외 처리
+        // 예외를 처리하지 않으면 CLR이 처리 == 시스템 다운
+        // try; catch; throw;
+        int[] arr = {1, 2, 3};
+        try                                         // 의심스러운 코드 감싸기
+        {
+            for (int i = 0; i < 5; i++)             // 인덱스 넘버가 배열에 배당된 인덱스보다 큼
+            {
+            System.Console.WriteLine(arr[i]);       // 실행 시 익셉션 발생
+            }
+        }
+        catch (IndexOutOfRangeException ex)         // 배열 인덱스 관련 예외 클래스
+        {
+            System.Console.WriteLine(ex.Message);
+        }
+        catch (Exception ex)                        // Exception -> 광범위하게 문제점을 찾음. 모든 예외 클래스의 조상
+        {
+            System.Console.WriteLine(ex.Message);   // 조치(문제점 출력)
+        }
+        finally                                     // 예외가 되든 안되든 무조건 출력함
+        {
+            System.Console.WriteLine("finally");
+        }
+        System.Console.WriteLine("End");
     }
 }
